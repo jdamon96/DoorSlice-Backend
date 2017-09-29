@@ -1,7 +1,7 @@
 var User = require('../models/user.js');
 var Address = require('../models/address.js');
 var Order = require('../models/order.js');
-var twilio = require ('twilio')('AC1a1ad265f4a260eb1628c9ff93f4c567','83ca854a8deca80069fef3b10341fe6b');
+var twilio = require ('twilio')(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN);
 
 exports.addOrder = function (req, res){
 
@@ -67,15 +67,11 @@ exports.addOrder = function (req, res){
 			var sendNumber = [];
 
 			if (user.school == "GEORGETOWN"){
-				sendNumber = ['+16095589351', '+16314131265', '+18056120506', '+17049009335'];
-				/*sendNumber = '+16314131265';*/ // Oliver
-				/*sendNumber = '+16095589351'; // Win*/
-				/*sendNumber = '+18056120506';*/ //  Justin
-				/*sendNumber = '+17049009335';*/ //  Sean
+				sendNumber = [config.GEORGETOWN_DELIVERER_NUMBER];
 				
 			} else {
 				if (user.school == "COLUMBIA"){
-					sendNumber = ['+14152791981'];
+					sendNumber = [config.COLUMBIA_DELIVERER_NUMBER];
 				}
 			};
 
@@ -84,7 +80,7 @@ exports.addOrder = function (req, res){
 			for(i = 0; i < sendNumber.length; i++){
 				twilio.sendMessage({
 					to: sendNumber[i],
-					from: '+16507535966', 
+					from: config.TWILIO_PHONE, 
 					body: 'New Order: ' + textData + ' Customer Phone: ' + customerPhone
 				}, function (err, data){
 					if (err){
@@ -111,7 +107,6 @@ exports.rateOrder = function (req, res){
 		if (req.body.review){
 			last_order.review = req.body.review;
 		};
-		
 
 		user.save(function (err){
 			if (err){

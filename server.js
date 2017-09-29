@@ -1,12 +1,13 @@
 // Get the packages
+var config = require('./config/main');
 var express = require('express');
 var mongoose = require ('mongoose');
 var bodyParser = require('body-parser');
-var twilio = require ('twilio')('AC1a1ad265f4a260eb1628c9ff93f4c567','83ca854a8deca80069fef3b10341fe6b');
-var stripe = require("stripe")("sk_live_IWLwriRewz2SHFiTS1EGtYSe");
+var twilio = require ('twilio')(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN);
+var stripe = require("stripe")(config.STRIPE_KEY);
 var jwt = require("jsonwebtoken");
 var passport = require('passport');
-var config = require('./config/main');
+
 // Loading models
 var User = require('./models/user');
 var Address = require('./models/address');
@@ -32,7 +33,7 @@ app.use(bodyParser.urlencoded({
 app.use(passport.initialize());
 
 // connect to mongoDB
-mongoose.connect('mongodb://jdamon96:Henryman001@ds137365-a0.mlab.com:37365,ds137365-a1.mlab.com:37365/doorsliceprod?replicaSet=rs-ds137365');
+mongoose.connect(config.MONGO_CONNECTION_URL);
 
 // Bring in passport strategy
 require('./config/passport')(passport);
@@ -123,32 +124,14 @@ router.get('/isOpen/:user_id', function (req, res){
 			res.send(err);
 		} else {
 			if (user.school == "GEORGETOWN"){
-				/*var d = new Date();
-				var n = d.getHours();
-				var m = d.getMinutes();
-				var nEST = n -4;
-				if (((nEST >= 22) && (nEST <= 23)) || ((nEST >= 0) && (nEST <= 2))){
-					res.json({open: true, closedMessage:''});
-				} else {
-					/*res.json({open: false, closedMessage: "Open at 10pm."});
-				}*/
-
-				res.json({open: true, closedMessage: "Closed for the weekend."});
-				/*res.json({open: false, closedMessage: "Open Wednesday, Thursday, and Friday 10pm - 3am."});*/
-				/*res.json({open: true, closedMessage:''});*/
+				
+				res.json({open: false, closedMessage: "Open Wednesday, Thursday, and Friday 10pm - 3am."});
 				
 			} else {
 				if (user.school == "COLUMBIA"){
-					/*var d = new Date();
-					var n = d.getHours();
-					var nEST = n - 4;
-					if (((nEST >= 20) && (nEST <= 23)) || ((nEST >= 0) && (nEST <= 4))){
-						res.json({open: true, time: nEST});	
-					} else {
-						res.json({open: false, time: nEST});
-					}*/
-					res.json({open: true, closedMessage: "antonios a fuckin bitch"});
-					/*res.json({open: true, closedMessage:''});*/
+
+					res.json({open: true, closedMessage: "Open Thursday, Friday, and Saturday 10pm - 3am"});
+		
 				}
 			}
 		}
@@ -160,14 +143,14 @@ router.get('/numbers', function (req, res){
 	
 });
 
-/*router.get('/sendOpenText', function (req, res){
+router.get('/sendOpenText', function (req, res){
 
 	var numbers = []
 	
 	for(i = 0; i < numbers.length-1; i++){
 		twilio.sendMessage({
 				to: numbers[i],
-				from: '+16507535966',
+				from: config.TWILIO_PHONE,
 				body: 'DoorSlice is now open! 10pm - 4am we are delivering fresh, hot pizza, by the slice, directly to your dorm room. Cheese: $2.99, Pepperoni: $3.49. Order now!'
 			}, function (err, data){
 				if (err){
@@ -176,21 +159,14 @@ router.get('/numbers', function (req, res){
 				res.send(data);
 			});
 	}	
-});*/
+});
 
 
 // returns user's profile
-
 router.route('/users/:user_id')
 	.all(passport.authenticate('jwt', { session: false }))
 	.get(userController.getUser);
 
-/*router.route('/users/:user_id')
-	.get(userController.getUser, passport.authenticate('jwt', { session: false }));*/
-
-/*router.route('/users/:user_id')
-	.get(userController.getUser);
-*/
 // Create a new Stripe customer
 router.route('/payments/newStripeUser/:user_id')
 	.all(passport.authenticate('jwt', { session: false }))
@@ -210,7 +186,6 @@ router.route('/payments/updateDefaultCard/:user_id')
 router.route('/payments/charge/:user_id')
 	.all(passport.authenticate('jwt', { session: false }))
 	.post(paymentController.chargeUser);
-
 
 // Update the default card of the user
 router.route('/payments/updateDefaultCard/:user_id')

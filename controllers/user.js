@@ -2,7 +2,7 @@ var User = require('../models/user.js');
 var jwt = require("jsonwebtoken");
 var passport = require('passport');
 var config = require('../config/main');
-var twilio = require ('twilio')('AC1a1ad265f4a260eb1628c9ff93f4c567','83ca854a8deca80069fef3b10341fe6b');
+var twilio = require ('twilio')(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN);
 
 // Endpoint for /api/users for POSTS
 exports.postUsers = function (req, res){
@@ -186,7 +186,7 @@ exports.sendCode = function (req, res){
 
 			twilio.sendMessage({
 				to: req.body.phone,
-				from: '+16507535966',
+				from: config.TWILIO_PHONE,
 				body: "Doorslice Verification Code: " + code
 			}, function (err, data){
 				if (err){
@@ -225,7 +225,7 @@ exports.sendPassCode = function (req, res){
 
 				twilio.sendMessage({
 					to: req.body.phone,
-					from: '+16507535966',
+					from: config.TWILIO_PHONE,
 					body: "Doorslice Password Reset Code: " + code
 				}, function (err, data){
 					if (err){

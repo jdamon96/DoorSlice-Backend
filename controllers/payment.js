@@ -1,7 +1,7 @@
 var User = require('../models/user.js');
 var Card = require('../models/card');
-var stripe = require("stripe")("sk_live_IWLwriRewz2SHFiTS1EGtYSe");
-var twilio = require ('twilio')('AC1a1ad265f4a260eb1628c9ff93f4c567','83ca854a8deca80069fef3b10341fe6b');
+var stripe = require("stripe")(config.STRIPE_KEY);
+var twilio = require ('twilio')(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN);
 
 exports.newStripeUser = function (req, res){
 
