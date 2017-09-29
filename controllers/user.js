@@ -51,33 +51,6 @@ exports.login = function (req, res){
 
 };
 
-// Endpoint for /api/users/authenticate for POST
-// 
-exports.authenticate = function (req, res){
-
-	User.findOne({
-	    phone: req.body.phone
-	  }, function(err, user) {
-	    if (err) throw err;
-
-	    if (!user) {
-	      res.send({ success: false, message: 'Authentication failed. User not found.' });
-	    } else {
-	      // Check if password matches
-	      user.comparePassword(req.body.password, function(err, isMatch) {
-	        if (isMatch && !err) {
-	          // Create token if the password matched and no error was thrown
-	          var token = jwt.sign(user, config.secret, {expiresIn: "180 days"});
-	          res.json({ success: true, token:"JWT " + token });
-	        } else {
-	          res.send({ success: false, message: 'Authentication failed. Passwords did not match.' });
-	        }
-	      });
-	    }
-	  });
-};
-
-
 // Method: adds an email to the user's user profile
 // Preconditions: have a variable in the body of the request called 'userEmail'
 // Postconditions: if there is an error an error will be returned
