@@ -18,6 +18,9 @@ var paymentController = require('./controllers/payment.js');
 var addressController = require('./controllers/address.js');
 var orderController = require('./controllers/order.js');
 
+var cheesePrice = 3.49
+var pepperoniPrice = 3.99
+
 // Create express application
 var app = express();
 // Use environment defined port
@@ -138,7 +141,7 @@ router.get('/isOpen/:user_id', function (req, res){
 	});
 });
 
-router.get('/sendOpenText', function (req, res){
+router.post('/sendOpenText', function (req, res){
 
 	var numbers = []
 	
@@ -146,7 +149,7 @@ router.get('/sendOpenText', function (req, res){
 		twilio.sendMessage({
 				to: numbers[i],
 				from: config.TWILIO_PHONE,
-				body: 'DoorSlice is now open! 10pm - 4am we are delivering fresh, hot pizza, by the slice, directly to your dorm room. Cheese: $2.99, Pepperoni: $3.49. Order now!'
+				body: 'DoorSlice is now open! 10pm - 3am we are delivering fresh, hot pizza, by the slice, directly to your dorm room. Cheese: $2.99, Pepperoni: $3.49. Order now!'
 			}, function (err, data){
 				if (err){
 					res.send(err);
@@ -221,7 +224,7 @@ router.route('/rateOrder/:user_id')
 var pricesRoute = router.route('/prices')
 
 pricesRoute.get(function (req, res){
-	res.json({"Cheese": 3.49, "Pepperoni": 3.99});
+	res.json({"Cheese": cheesePrice, "Pepperoni": pepperoniPrice});
 });
 
 var addressRoute = router.route('/addresses/dorms/:user_id')
