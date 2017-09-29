@@ -9,15 +9,15 @@ The backend is a RESTful API implemented in nodejs using express. The applicatio
 
 **User**:
 
-| URL           | HTTP Request  | Description  | 
-| ------------- |:-------------:| ------------:|
-| /users        | POST          | creates a new user|
-| /users/login      | POST      |   Creates JWT for user and sends as response |
-| /users/addEmail/:user_id | POST      |    adds email to user's profile|
-| /users/wantsReceipts/:user_id | POST      |    toggles user's receipt preference|
-| /users/wantsConfirmation/:user_id | POST      |    toggles user's order confirmation preference|
-| /users/hasSeenTutorial/:user_id | POST    |  marks if user has seen app tutorial|
-| /users/:user_id | GET      |    returns user's profile        |
+| URL           | HTTP Request  | Description  | Request Requirements |
+| ------------- |:-------------:| ------------:| --------------------:|
+| /users        | POST          | creates a new user| phone, password, school |
+| /users/login      | POST      |   Creates JWT for user and sends as response | phone, password |
+| /users/addEmail/:user_id | POST      |    adds email to user's profile| email |
+| /users/wantsReceipts/:user_id | POST      |    toggles user's receipt preference| wantsReceipts |
+| /users/wantsConfirmation/:user_id | POST      |    toggles user's order confirmation preference| wantsConfirmation |
+| /users/hasSeenTutorial/:user_id | POST    |  marks if user has seen app tutorial| hasSeenTutorial |
+| /users/:user_id | GET      |    returns user's profile        | |
 
 **Order**:
 
@@ -40,11 +40,13 @@ The backend is a RESTful API implemented in nodejs using express. The applicatio
 
 **Address**:
 
-• /address/:user_id
-  • POST: add a new address to a user's profile
-• /address/:user_id/:address_id
-  • DELETE: delete address from a user's profile
-  
+| URL           | HTTP Request  | Description  | Request Requirements  | 
+| ------------- |:-------------:|:------------:| ------------:|
+| /address/:user_id/       | POST | add a new address to user's profile |school, dorm, room|
+| /address/dorms/:user_id/       | GET | returns list of dorms for user's school||
+| /address/:user_id/:address_id     | DELETE      | deletes address from user's profile | |
+
+
 
 **Misc**:
 • /sendPassCode
