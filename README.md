@@ -31,29 +31,30 @@ The backend is a RESTful API implemented in nodejs using express. The applicatio
 
 | URL           | HTTP Request  | Description  | Request Requirements  | 
 | ------------- |:-------------:|:------------:| ------------:|
-| /payments/newStripeUser/:user_id/       | POST | creates a new Stripe profile for indicated user |stripeToken, lastFour|
+| /payments/newStripeUser/:user_id       | POST | creates a new Stripe profile for indicated user |stripeToken, lastFour|
 | /payments/newStripeCard/:user_id      | POST      |adds new credit card to user's Stripe profile|  stripeToken, lastFour |
-| /payments/updateDefaultCard/:user_id/       | POST | updates user's default Stripe credit card|cardID|
-| /payments/removeCard/:user_id/       | POST | removes credit card from user's Stripe profile |cardID|
-| /payments/charge/:user_id/       | POST | charges user's Stripe profile |chargeAmount, chargeDescription, stripeToken|
+| /payments/updateDefaultCard/:user_id       | POST | updates user's default Stripe credit card|cardID|
+| /payments/removeCard/:user_id       | POST | removes credit card from user's Stripe profile |cardID|
+| /payments/charge/:user_id      | POST | charges user's Stripe profile |chargeAmount, chargeDescription, stripeToken|
 
 
 **Address**:
 
 | URL           | HTTP Request  | Description  | Request Requirements  | 
 | ------------- |:-------------:|:------------:| ------------:|
-| /address/:user_id/       | POST | add a new address to user's profile |school, dorm, room|
-| /address/dorms/:user_id/       | GET | returns list of dorms for user's school||
+| /address/:user_id       | POST | add a new address to user's profile |school, dorm, room|
+| /address/dorms/:user_id       | GET | returns list of dorms for user's school||
 | /address/:user_id/:address_id     | DELETE      | deletes address from user's profile | |
 
 
 
 **Misc**:
-• /sendPassCode
-• /resetPass
-• /isOpen/:user_id
-• /sendOpenText
-• /rateOrder/:user_id
-• /prices
-  • GET: returns prices for cheese slice and pepperoni slice
 
+| URL           | HTTP Request  | Description  | Request Requirements  | 
+| ------------- |:-------------:|:------------:| ------------:|
+| /sendCode       | POST | texts a verification code to user's indicated phone number|phone|
+| /sendPassCode       | POST | texts a verification code for a user resetting their password|phone|
+| /resetPass     | POST      | changes user's password if verification code matches|phone, code, password|
+| /isOpen/:user_id     | GET      | returns JSON indicating whether DoorSlice is open or closed | |
+| /sendOpenText     | POST      | triggers a text to users when delivery is open | |
+| /prices     | GET     | returns JSON with cheese and pepperoni prices | |
