@@ -224,7 +224,7 @@ pricesRoute.get(function (req, res){
 	res.json({"Cheese": 3.49, "Pepperoni": 3.99});
 });
 
-var addressRoute = router.route('/addresses/:user_id')
+var addressRoute = router.route('/addresses/dorms/:user_id')
 
 addressRoute.get(function (req, res){
 
@@ -239,7 +239,7 @@ addressRoute.get(function (req, res){
 
 				var dorms = [
 
-				"CARMAN", "CLAREMONT4LOGAN"/*,  "WIEN HALL", 
+				"CARMAN", /*"CLAREMONT",  "WIEN HALL", 
 				"48 CLAREMONT", "601 WEST 113TH STREET",
 				"BROADWAY HALL", "CARLTON ARMS", 
 				"EAST CAMPUS", "FURNALD HALL",
