@@ -138,11 +138,6 @@ router.get('/isOpen/:user_id', function (req, res){
 	});
 });
 
-router.get('/numbers', function (req, res){
-
-	
-});
-
 router.get('/sendOpenText', function (req, res){
 
 	var numbers = []
