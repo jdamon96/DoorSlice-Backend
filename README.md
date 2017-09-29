@@ -9,25 +9,34 @@ The backend is a RESTful API implemented in nodejs using express. The applicatio
 
 **User**:
 
-/users
-
-  POST: create a new user (request requires 'phone', 'password', and 'school' fields)
-  
-• /users/authenticate
-
-• /users/login
-
-• /users/addEmail/:user_id
-
-• /users/wantsReceipts/:user_id
-
-• /user/hasSeenTutorial/:user_id
-
-• /users/:user_id 
+| URL           | HTTP Request  | Description  | 
+| ------------- |:-------------:| ------------:|
+| /users        | POST          | creates a new user|
+| /users/login      | POST      |   Creates JWT for user and sends as response |
+| /users/addEmail/:user_id | POST      |    adds email to user's profile|
+| /users/wantsReceipts/:user_id | POST      |    toggles user's receipt preference|
+| /users/wantsConfirmation/:user_id | POST      |    toggles user's order confirmation preference|
+| /users/hasSeenTutorial/:user_id | POST    |  marks if user has seen app tutorial|
+| /users/:user_id | GET      |    returns user's profile        |
 
 **Order**:
 
-**Card**:
+| URL           | HTTP Request  | Description  | Request Requirements  | 
+| ------------- |:-------------:|:------------:| ------------:|
+| /orders/:user_id/:address_id        | POST | creates new order |cheese, pepperoni, price, cardUsed|
+| /rateOrder/:user_id      | POST      |creates new order review|   stars, review |
+
+
+**Card ("payment")**:
+
+| URL           | HTTP Request  | Description  | Request Requirements  | 
+| ------------- |:-------------:|:------------:| ------------:|
+| /payments/newStripeUser/:user_id/       | POST | creates a new Stripe profile for indicated user |stripeToken, lastFour|
+| /payments/newStripeCard/:user_id      | POST      |adds new credit card to user's Stripe profile|  stripeToken, lastFour |
+| /payments/updateDefaultCard/:user_id/       | POST | updates user's default Stripe credit card|cardID|
+| /payments/removeCard/:user_id/       | POST | removes credit card from user's Stripe profile |cardID|
+| /payments/charge/:user_id/       | POST | charges user's Stripe profile |chargeAmount, chargeDescription, stripeToken|
+
 
 **Address**:
 
