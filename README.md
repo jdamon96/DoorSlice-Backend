@@ -1,6 +1,8 @@
 # DoorSlice-Backend
 Coded June/July 2016.
 
+Demo: https://vimeo.com/188041261
+
 DoorSlice was a collaborative project with https://github.com/Anteloper that allowed users to order pizza with a single tap. The front end iOS source code is available at https://github.com/Anteloper/DoorSlice. 
 
 The backend is a RESTful API implemented in nodejs using express. The application uses four models/controllers: users, orders, cards (user's credit card information), and addresses. API responses are JSON.
